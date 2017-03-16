@@ -1,22 +1,15 @@
+#include <rgb_lcd.h>
+#include <Wire.h>
 #include <Servo.h>
-#include <LiquidCrystal.h>
 
-/*
- * The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * LCD VSS pin to ground
- * LCD VCC pin to 5V
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
- */
- LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+ /*
+  * SDA - analog pin 4
+  * SCL - analog pin 5
+  */
+ rgb_lcd lcd;
+ const int colorR = 255;
+ const int colorG = 0;
+ const int colorB = 0;
 
 int BUZZER_PIN = 6;
 int tempo = 300;
@@ -32,6 +25,8 @@ int counter = 0;
 int avg = 0;
 int finalAvg = 0;
 
+bool running = true;
+
 Servo servoLeft;          
 Servo servoRight;          
 
@@ -45,46 +40,25 @@ void setup() {
   lcd.begin(16, 2);
 } 
 
-bool running = true;
 void loop() { 
   if(running)
   {
+    /*
+     * put all robot code here
+     */
+    
     forward(15);
+    char str[ ] = "Hello WECE!";
+    printMessage(str);
+    
     running = false;
   }
-}
-
-/*int main()
-{
-  //setup();
-  //forward(5);
-  return 0;
-}
-*/
-void robotMovement()
-{
-  //add functions for robot movement
-  
-  /*
-   * functions for students to use:
-   * 
-   * printMessage( char inputString[] )
-   * ledOn( int seconds )
-   * turnLeft( int seconds )
-   * turnRights( int seconds )
-   * reverse( int secodns )
-   * forward( int seconds )
-   * playMusic( char notes[], int beats[], int length )
-   * buttonMusic( char notes[], int beats[], int length )
-   * buttonLed()
-   */
-
-   forward(5);
 }
 
 //LCD functions
 int printMessage(char str[])
 {
+  lcd.setRGB(colorR, colorG, colorB);
   lcd.setCursor(0, 1);
   lcd.print(str);
   delay(50);
