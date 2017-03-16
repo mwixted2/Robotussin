@@ -123,11 +123,13 @@ int turnLeft(int seconds)
   counter = 0;
   avg = 0;
   finalAvg = 0;
-  val = analogRead(sensorpin);       // reads the value of the sharp sensor
-  Serial.println(val);            // prints the value of the sensor to the serial monitor
 
   while(time > 0)
   {
+    val = analogRead(sensorpin);       // reads the value of the sharp sensor
+    Serial.println(val);            // prints the value of the sensor to the serial monitor
+    Serial.print("\t");
+    Serial.println(time);
     if(counter < 9)
     {
       avg += val;
@@ -167,11 +169,13 @@ int turnRight(int seconds)
   counter = 0;
   avg = 0;
   finalAvg = 0;
-  val = analogRead(sensorpin);       // reads the value of the sharp sensor
-  Serial.println(val);            // prints the value of the sensor to the serial monitor
 
   while(time > 0)
   {
+    val = analogRead(sensorpin);       // reads the value of the sharp sensor
+    Serial.println(val);            // prints the value of the sensor to the serial monitor
+    Serial.print("\t");
+    Serial.println(time);
     if(counter < 9)
     {
       avg += val;
@@ -211,11 +215,13 @@ int reverse(int seconds)
   counter = 0;
   avg = 0;
   finalAvg = 0;
-  val = analogRead(sensorpin);       // reads the value of the sharp sensor
-  Serial.println(val);            // prints the value of the sensor to the serial monitor
 
   while(time > 0)
   {
+    val = analogRead(sensorpin);       // reads the value of the sharp sensor
+    Serial.println(val);            // prints the value of the sensor to the serial monitor
+    Serial.print("\t");
+    Serial.println(time);
     if(counter < 9)
     {
       avg += val;
@@ -255,11 +261,12 @@ int forward(int seconds)
   counter = 0;
   avg = 0;
   finalAvg = 0;
-  val = analogRead(sensorpin);       // reads the value of the sharp sensor
-  //Serial.println("ir sensor: " + val);            // prints the value of the sensor to the serial monitor
 
   while(time > 0)
   {
+    val = analogRead(sensorpin);       // reads the value of the sharp sensor
+    Serial.println(val);            // prints the value of the sensor to the serial monitor
+    Serial.print("\t");
     Serial.println(time);
     if(counter < 9)
     {
@@ -364,4 +371,3 @@ int buttonLed()
     return 0;
   }
 }
-
