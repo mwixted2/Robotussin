@@ -41,17 +41,16 @@ void setup() {
 } 
 
 void loop() { 
-  if(running)
+  buttonState = digitalRead(buttonPin);
+  if(buttonState == HIGH)
   {
     /*
      * put all robot code here
      */
     
-    forward(15);
+    forward(10);
     char str[ ] = "Hello WECE!";
     printMessage(str);
-    
-    running = false;
   }
 }
 
