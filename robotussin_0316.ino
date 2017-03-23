@@ -27,12 +27,17 @@ int finalAvg = 0;
 
 bool running = true;
 
+/* testing buzzer */
+char notes[] = "ceg ";
+int beats[] = { 1, 1, 1, 1};
+int length = 4;
+
 Servo servoLeft;          
 Servo servoRight;          
 
 void setup() { 
-  servoLeft.attach(9);  
-  servoRight.attach(10);  
+  //servoLeft.attach(9);  
+  //servoRight.attach(10);  
   pinMode(led, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(buttonPin, INPUT);
@@ -48,9 +53,12 @@ void loop() {
      * put all robot code here
      */
     
-    forward(10);
+    forward(3);
+    reverse(3);
     char str[ ] = "Hello WECE!";
     printMessage(str);
+    playMusic();
+    delay(200);
   }
 }
 
@@ -92,6 +100,10 @@ float read_gp2d12_range(byte pin)
 
 int turnLeft(int seconds)
 {
+  servoLeft.attach(9);  // Set left servo to digital pin 10
+  servoRight.attach(10);  // Set right servo to digital pin 9
+  left();
+  
   int time = seconds * 1000;
   counter = 0;
   avg = 0;
@@ -118,16 +130,16 @@ int turnLeft(int seconds)
     delay(25);                    
   
     if (finalAvg > 300) {
-     stopRobot();
-     return 0;
+     break;
     }
     else if (finalAvg <= 300) {
       left();
     }
   }
 
-  stopRobot();
-  delay(50);
+  servoLeft.detach();
+  servoRight.detach();
+  delay(200);
   return 0;
 }
 
@@ -138,6 +150,10 @@ void left() {
 
 int turnRight(int seconds)
 {
+  servoLeft.attach(9);  // Set left servo to digital pin 10
+  servoRight.attach(10);  // Set right servo to digital pin 9
+  right();
+  
   int time = seconds * 1000;
   counter = 0;
   avg = 0;
@@ -164,16 +180,16 @@ int turnRight(int seconds)
     delay(25);                    
   
     if (finalAvg > 300) {
-     stopRobot();
-     return 0;
+     break;
     }
     else if (finalAvg <= 300) {
       right();
     }
   }
 
-  stopRobot();
-  delay(50);
+  servoLeft.detach();
+  servoRight.detach();
+  delay(200);
   return 0;
 }
 
@@ -184,6 +200,10 @@ void right() {
 
 int reverse(int seconds)
 {
+  servoLeft.attach(9);  // Set left servo to digital pin 10
+  servoRight.attach(10);  // Set right servo to digital pin 9
+  reverseRobot();
+  
   int time = seconds * 1000;
   counter = 0;
   avg = 0;
@@ -210,16 +230,16 @@ int reverse(int seconds)
     delay(25);                    
   
     if (finalAvg > 300) {
-     stopRobot();
-     return 0;
+     break;
     }
     else if (finalAvg <= 300) {
       reverseRobot();
     }
   }
 
-  stopRobot();
-  delay(50);
+  servoLeft.detach();
+  servoRight.detach();
+  delay(200);
   return 0;
 }
 
@@ -230,6 +250,10 @@ void reverseRobot() {
 
 int forward(int seconds)
 {
+  servoLeft.attach(9);  // Set left servo to digital pin 10
+  servoRight.attach(10);  // Set right servo to digital pin 9
+  forwardRobot();
+  
   int time = seconds * 1000;
   counter = 0;
   avg = 0;
@@ -256,16 +280,16 @@ int forward(int seconds)
     delay(25);                    
   
     if (finalAvg > 300) {
-     stopRobot();
-     return 0;
+     break;
     }
     else if (finalAvg <= 300) {
       forwardRobot();
     }
   }
 
-  stopRobot();
-  delay(50);
+  servoLeft.detach();
+  servoRight.detach();
+  delay(200);
   return 0;
 }
 
@@ -280,7 +304,7 @@ void stopRobot() {
 }
 
 //Music functions
-void playMusic(char notes[], int beats[], int length)
+void playMusic()
 {
   for(int i = 0; i < length; i++) {
         if(notes[i] == ' ') {
@@ -315,6 +339,7 @@ void playNote(char note, int duration) {
 }
 
 //Button code
+/*
 int buttonMusic(char notes[], int beats[], int length)
 {
   buttonState = digitalRead(buttonPin);
@@ -344,3 +369,4 @@ int buttonLed()
     return 0;
   }
 }
+*/
