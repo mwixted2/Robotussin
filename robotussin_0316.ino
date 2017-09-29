@@ -11,38 +11,47 @@
  const int colorG = 0;
  const int colorB = 0;
 
-int BUZZER_PIN = 6;
+int BUZZER_PIN = 2;
 int tempo = 300;
 
-int buttonPin = 2;
+int buttonPin = 6;
 int buttonState = 0;
 
-int sensorpin = 0;                 
-int val = 0;                 
+int sensorpin = 0; 
+int sensorpin2 = 1;
+int sensorpin3 = 2;                
+int val = 0;
+int val2 = 0;
+int val3 = 0;                 
 int led = 11;
 
 int counter = 0;
 int avg = 0;
 int finalAvg = 0;
+int avg2 = 0;
+int finalAvg2 = 0;
+int avg3 = 0;
+int finalAvg3 = 0;
 
 bool running = true;
 
 /* testing buzzer */
+/*
 char notes[] = "ceg ";
 int beats[] = { 1, 1, 1, 1};
 int length = 4;
+*/
 
 Servo servoLeft;          
 Servo servoRight;          
 
-void setup() { 
-  //servoLeft.attach(9);  
-  //servoRight.attach(10);  
+void setup() {  
   pinMode(led, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(buttonPin, INPUT);
   Serial.begin(9600);
-  lcd.begin(16, 2);
+ // lcd commented out until it's fixed
+  //lcd.begin(16, 2);
 } 
 
 void loop() { 
@@ -52,12 +61,22 @@ void loop() {
     /*
      * put all robot code here
      */
-    
-    forward(3);
+    forward(5);
+    turnLeft(5);
+    /*
+    turnRight(5);
+    turnLeft(5);
+    forward(5);
+    reverse(5);
+    */
+
+
+    /*
     reverse(3);
     char str[ ] = "Hello WECE!";
     printMessage(str);
     playMusic();
+    */
     delay(200);
   }
 }
@@ -100,46 +119,13 @@ float read_gp2d12_range(byte pin)
 
 int turnLeft(int seconds)
 {
-  servoLeft.attach(9);  // Set left servo to digital pin 10
-  servoRight.attach(10);  // Set right servo to digital pin 9
+  Serial.println("turning left");
+  attachWheels();
   left();
   
-  int time = seconds * 1000;
-  counter = 0;
-  avg = 0;
-  finalAvg = 0;
+  readSensors(seconds, 3);
 
-  while(time > 0)
-  {
-    val = analogRead(sensorpin);       // reads the value of the sharp sensor
-    Serial.println(val);            // prints the value of the sensor to the serial monitor
-    Serial.print("\t");
-    Serial.println(time);
-    if(counter < 9)
-    {
-      avg += val;
-      counter++;
-    }
-    else
-    {
-      finalAvg = avg / 10;
-      avg = 0;
-      counter = 0;
-    }
-    time = time - 25;
-    delay(25);                    
-  
-    if (finalAvg > 300) {
-     break;
-    }
-    else if (finalAvg <= 300) {
-      left();
-    }
-  }
-
-  servoLeft.detach();
-  servoRight.detach();
-  delay(200);
+  detachWheels();
   return 0;
 }
 
@@ -150,46 +136,13 @@ void left() {
 
 int turnRight(int seconds)
 {
-  servoLeft.attach(9);  // Set left servo to digital pin 10
-  servoRight.attach(10);  // Set right servo to digital pin 9
+  Serial.println("turning right");
+  attachWheels();
   right();
   
-  int time = seconds * 1000;
-  counter = 0;
-  avg = 0;
-  finalAvg = 0;
+  readSensors(seconds, 1);
 
-  while(time > 0)
-  {
-    val = analogRead(sensorpin);       // reads the value of the sharp sensor
-    Serial.println(val);            // prints the value of the sensor to the serial monitor
-    Serial.print("\t");
-    Serial.println(time);
-    if(counter < 9)
-    {
-      avg += val;
-      counter++;
-    }
-    else
-    {
-      finalAvg = avg / 10;
-      avg = 0;
-      counter = 0;
-    }
-    time = time - 25;
-    delay(25);                    
-  
-    if (finalAvg > 300) {
-     break;
-    }
-    else if (finalAvg <= 300) {
-      right();
-    }
-  }
-
-  servoLeft.detach();
-  servoRight.detach();
-  delay(200);
+  detachWheels();
   return 0;
 }
 
@@ -200,46 +153,13 @@ void right() {
 
 int reverse(int seconds)
 {
-  servoLeft.attach(9);  // Set left servo to digital pin 10
-  servoRight.attach(10);  // Set right servo to digital pin 9
+  Serial.println("reversing");
+  attachWheels();
   reverseRobot();
   
-  int time = seconds * 1000;
-  counter = 0;
-  avg = 0;
-  finalAvg = 0;
+  readSensors(seconds, 2);
 
-  while(time > 0)
-  {
-    val = analogRead(sensorpin);       // reads the value of the sharp sensor
-    Serial.println(val);            // prints the value of the sensor to the serial monitor
-    Serial.print("\t");
-    Serial.println(time);
-    if(counter < 9)
-    {
-      avg += val;
-      counter++;
-    }
-    else
-    {
-      finalAvg = avg / 10;
-      avg = 0;
-      counter = 0;
-    }
-    time = time - 25;
-    delay(25);                    
-  
-    if (finalAvg > 300) {
-     break;
-    }
-    else if (finalAvg <= 300) {
-      reverseRobot();
-    }
-  }
-
-  servoLeft.detach();
-  servoRight.detach();
-  delay(200);
+  detachWheels();
   return 0;
 }
 
@@ -250,46 +170,13 @@ void reverseRobot() {
 
 int forward(int seconds)
 {
-  servoLeft.attach(9);  // Set left servo to digital pin 10
-  servoRight.attach(10);  // Set right servo to digital pin 9
+  Serial.println("moving forward");
+  attachWheels();
   forwardRobot();
   
-  int time = seconds * 1000;
-  counter = 0;
-  avg = 0;
-  finalAvg = 0;
+  readSensors(seconds, 0);
 
-  while(time > 0)
-  {
-    val = analogRead(sensorpin);       // reads the value of the sharp sensor
-    Serial.println(val);            // prints the value of the sensor to the serial monitor
-    Serial.print("\t");
-    Serial.println(time);
-    if(counter < 9)
-    {
-      avg += val;
-      counter++;
-    }
-    else
-    {
-      finalAvg = avg / 10;
-      avg = 0;
-      counter = 0;
-    }
-    time = time - 25;
-    delay(25);                    
-  
-    if (finalAvg > 300) {
-     break;
-    }
-    else if (finalAvg <= 300) {
-      forwardRobot();
-    }
-  }
-
-  servoLeft.detach();
-  servoRight.detach();
-  delay(200);
+  detachWheels();
   return 0;
 }
 
@@ -303,8 +190,93 @@ void stopRobot() {
   servoRight.write(90);
 }
 
+void attachWheels() {
+  servoLeft.attach(9);  
+  servoRight.attach(10);  
+}
+
+void detachWheels() {
+  servoLeft.detach();
+  servoRight.detach();
+  delay(200);
+}
+
+/* Inputs for direction:
+ * 0 - forward
+ * 1 - right
+ * 2 - reverse
+ * 3 - left
+ */
+void readSensors(int seconds, int direction) {
+  int time = seconds * 1000;
+  counter = 0;
+  avg = 0;
+  avg2 = 0;
+  avg3 = 0;
+  finalAvg = 0;
+  finalAvg2 = 0;
+  finalAvg3 = 0;
+
+  while(time > 0)
+  {
+    val = analogRead(sensorpin);       // front sensor
+    val2 = analogRead(sensorpin2);    // right sensor
+    val3 = analogRead(sensorpin3);    // left sensor
+    Serial.println(val);            // prints the value of the sensor to the serial monitor
+    Serial.println(val2);
+    Serial.println(val3);
+    Serial.print("\t");
+    Serial.println(time);
+    if(counter < 9)
+    {
+      avg += val;
+      avg2 += val2;
+      avg3 += val3;
+      counter++;
+    }
+    else
+    {
+      finalAvg = avg / 10;
+      finalAvg2 = avg2 / 10;
+      finalAvg3 = avg3 / 10;
+      avg = 0;
+      avg2 = 0;
+      avg3 = 0;
+      counter = 0;
+    }
+    time = time - 25;
+    delay(25);                    
+  
+    if (finalAvg > 300 || finalAvg2 > 300 || finalAvg3 > 300) {
+     break;
+    }
+    else if (finalAvg <= 300 && finalAvg2 <= 300 && finalAvg3 <= 300) {
+      if (direction == 0)
+      {
+        forwardRobot();
+      }
+      else if (direction == 1)
+      {
+        right();
+      }
+      else if (direction == 2)
+      {
+        reverseRobot();
+      }
+      else if (direction == 3)
+      {
+        left();
+      }
+      else
+      {
+        detachWheels();
+      }
+    }
+  }
+}
+
 //Music functions
-void playMusic()
+void playMusic(char notes[], int beats[], int length)
 {
   for(int i = 0; i < length; i++) {
         if(notes[i] == ' ') {
@@ -314,6 +286,24 @@ void playMusic()
         }
         delay(tempo / 2);    /* delay between notes */
     }
+}
+
+void playMusic(char str[])
+{
+  if(str == "siren")
+  {
+    char notes[] = "ecec ";
+    int beats[] = { 1, 1, 1, 1, 1};
+    int length = 5; 
+    for(int i = 0; i < length; i++) {
+          if(notes[i] == ' ') {
+              delay(beats[i] * tempo);
+          } else {
+              playNote(notes[i], beats[i] * tempo);
+          }
+          delay(tempo / 2);    /* delay between notes */
+      }
+  }
 }
 
 /* play tone */
@@ -354,7 +344,6 @@ int buttonMusic(char notes[], int beats[], int length)
     return 0;
   }
 }
-
 int buttonLed()
 {
   buttonState = digitalRead(buttonPin);
