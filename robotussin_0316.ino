@@ -3,20 +3,25 @@
 #include <Servo.h>
 
  /*
+  * Notes on the pins:
   * SDA - analog pin 4
   * SCL - analog pin 5
   */
- rgb_lcd lcd;
- const int colorR = 255;
- const int colorG = 0;
- const int colorB = 0;
 
+// lcd constants
+rgb_lcd lcd;
+const int colorR = 255;
+const int colorG = 0;
+const int colorB = 0;
+
+// variables for buzzer and button
 int BUZZER_PIN = 2;
 int tempo = 300;
 
 int buttonPin = 6;
 int buttonState = 0;
 
+// variables for sensors
 int sensorpin = 0; 
 int sensorpin2 = 1;
 int sensorpin3 = 2;                
@@ -33,15 +38,7 @@ int finalAvg2 = 0;
 int avg3 = 0;
 int finalAvg3 = 0;
 
-bool running = true;
-
-/* testing buzzer */
-/*
-char notes[] = "ceg ";
-int beats[] = { 1, 1, 1, 1};
-int length = 4;
-*/
-
+// Servos
 Servo servoLeft;          
 Servo servoRight;          
 
@@ -50,7 +47,7 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(buttonPin, INPUT);
   Serial.begin(9600);
- // lcd commented out until it's fixed
+  // lcd commented out until it's fixed
   //lcd.begin(16, 2);
 } 
 
@@ -63,25 +60,13 @@ void loop() {
      */
     forward(5);
     turnLeft(5);
-    /*
-    turnRight(5);
-    turnLeft(5);
-    forward(5);
-    reverse(5);
-    */
-
-
-    /*
-    reverse(3);
-    char str[ ] = "Hello WECE!";
-    printMessage(str);
-    playMusic();
-    */
+    playMusic("siren");
+    
     delay(200);
   }
 }
 
-//LCD functions
+// LCD functions - disabled until lcd is fixed
 int printMessage(char str[])
 {
   lcd.setRGB(colorR, colorG, colorB);
@@ -91,32 +76,7 @@ int printMessage(char str[])
   return 0;
 }
 
-//LED functions
-int ledOn(int seconds)
-{
-  analogWrite(led, 200);
-  digitalWrite(6, HIGH);
-  delay(seconds * 1000);
-  ledOff();
-  return 0;
-}
-
-void ledOff()
-{
-  analogWrite(led, 0);
-  digitalWrite(6, LOW);
-  delay(50);
-}
-
 // Motion routines for forward, reverse, turns, and stop
-float read_gp2d12_range(byte pin)
-{
-  int tmp;
-  tmp = analogRead(pin);
-  if (tmp < 3)return -1;
-  return (6787.0 /((float)tmp - 3.0)) - 4.0;
-}
-
 int turnLeft(int seconds)
 {
   Serial.println("turning left");
@@ -199,6 +159,14 @@ void detachWheels() {
   servoLeft.detach();
   servoRight.detach();
   delay(200);
+}
+
+float read_gp2d12_range(byte pin)
+{
+  int tmp;
+  tmp = analogRead(pin);
+  if (tmp < 3)return -1;
+  return (6787.0 /((float)tmp - 3.0)) - 4.0;
 }
 
 /* Inputs for direction:
@@ -327,35 +295,3 @@ void playNote(char note, int duration) {
         }
     }
 }
-
-//Button code
-/*
-int buttonMusic(char notes[], int beats[], int length)
-{
-  buttonState = digitalRead(buttonPin);
-  if(buttonState == HIGH)
-  {
-    playMusic(notes, beats, length);
-    return 0;
-  }
-  else
-  {
-    digitalWrite(6, LOW);
-    return 0;
-  }
-}
-int buttonLed()
-{
-  buttonState = digitalRead(buttonPin);
-  if(buttonState == HIGH)
-  {
-    ledOn(5);
-    return 0;
-  }
-  else if(buttonState == LOW)
-  {
-    ledOff();
-    return 0;
-  }
-}
-*/
