@@ -60,7 +60,10 @@ void loop() {
      */
     forward(5);
     turnLeft(5);
-    playMusic("siren");
+    char notes[] = "cdefg ";
+    int beats[] = {1, 1, 1, 1, 1, 1};
+    playMusic(notes, beats);
+    //playMusic("siren");
     
     delay(200);
   }
@@ -244,8 +247,16 @@ void readSensors(int seconds, int direction) {
 }
 
 //Music functions
-void playMusic(char notes[], int beats[], int length)
+void playMusic(char notes[], int beats[])
 {
+  if(sizeof(notes) != sizeof(beats))
+  {
+    Serial.println("notes and beats don't match!");
+    return;
+  }
+
+  int length = sizeof(notes);
+  
   for(int i = 0; i < length; i++) {
         if(notes[i] == ' ') {
             delay(beats[i] * tempo);
