@@ -48,7 +48,7 @@ void setup() {
   pinMode(buttonPin, INPUT);
   Serial.begin(9600);
   // lcd commented out until it's fixed
-  //lcd.begin(16, 2);
+  lcd.begin(16, 2);
 } 
 
 void loop() { 
@@ -58,10 +58,11 @@ void loop() {
     /*
      * put all robot code here
      */
-    forward(5);
-    turnLeft(5);
-    char notes[] = "cdefg ";
-    int beats[] = {1, 1, 1, 1, 1, 1};
+    forward(3);
+    printMessage("hello WECE!");
+    turnLeft(3);
+    char notes[] = "ceg ";
+    int beats[] = {1, 1, 1, 1};
     playMusic(notes, beats);
     //playMusic("siren");
     
@@ -218,10 +219,16 @@ void readSensors(int seconds, int direction) {
     time = time - 25;
     delay(25);                    
   
-    if (finalAvg > 300 || finalAvg2 > 300 || finalAvg3 > 300) {
+    if (finalAvg > 400 || finalAvg2 > 400 || finalAvg3 > 400) {
+      Serial.print("final avgs: ");
+      Serial.print(finalAvg);
+      Serial.print(" ");
+      Serial.print(finalAvg2);
+      Serial.print(" ");
+      Serial.println(finalAvg3);
      break;
     }
-    else if (finalAvg <= 300 && finalAvg2 <= 300 && finalAvg3 <= 300) {
+    else if (finalAvg <= 400 && finalAvg2 <= 400 && finalAvg3 <= 400) {
       if (direction == 0)
       {
         forwardRobot();
