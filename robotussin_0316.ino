@@ -10,9 +10,9 @@
 
 // lcd constants
 rgb_lcd lcd;
-const int colorR = 255;
-const int colorG = 0;
-const int colorB = 0;
+int colorR = 255;
+int colorG = 0;
+int colorB = 0;
 
 // variables for buzzer and button
 int BUZZER_PIN = 2;
@@ -58,19 +58,38 @@ void loop() {
     /*
      * put all robot code here
      */
+     /*
     forward(3);
     printMessage("hello WECE!");
     turnLeft(3);
-    char notes[] = "ceg ";
-    int beats[] = {1, 1, 1, 1};
+    char notes[] = "cg ";
+    int beats[] = {1, 1, 1};
     playMusic(notes, beats);
+    */
     //playMusic("siren");
+
+    
+    setLcdColor(47, 34, 229);
+    printMessage("Go Gators!");
+    delay(3000);
+    setLcdColor(255, 119, 0);
+    printMessage("Go Gators!");
+    delay(3000); 
+    
     
     delay(200);
   }
 }
 
 // LCD functions - disabled until lcd is fixed
+int setLcdColor(int r, int g, int b)
+{
+  colorR = r;
+  colorG = g;
+  colorB = b;
+  return 0;
+}
+
 int printMessage(char str[])
 {
   lcd.setRGB(colorR, colorG, colorB);
