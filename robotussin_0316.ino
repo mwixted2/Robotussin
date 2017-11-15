@@ -8,20 +8,20 @@
   * SCL - analog pin 5
   */
 
-// lcd constants
+// LCD constants
 rgb_lcd lcd;
 int colorR = 255;
 int colorG = 0;
 int colorB = 0;
 
-// variables for buzzer and button
+// Variables for buzzer and button
 int BUZZER_PIN = 2;
 int tempo = 300;
 
 int buttonPin = 6;
 int buttonState = 0;
 
-// variables for sensors
+// Variables for sensors
 int sensorpin = 0; 
 int sensorpin2 = 1;
 int sensorpin3 = 2;                
@@ -42,16 +42,19 @@ int finalAvg3 = 0;
 Servo servoLeft;          
 Servo servoRight;          
 
-void setup() {  
+void setup() { 
+  // A lot of setting up so we get the right connections to the pins 
   pinMode(led, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(buttonPin, INPUT);
   Serial.begin(9600);
-  // lcd commented out until it's fixed
   lcd.begin(16, 2);
 } 
 
 void loop() { 
+  // The buttonState variable and the following if statement makes it so that the robot
+  // only moves once the button is pressed
+  
   buttonState = digitalRead(buttonPin);
   if(buttonState == HIGH)
   {
@@ -68,20 +71,36 @@ void loop() {
     */
     //playMusic("siren");
 
-    
+    forward(5);
     setLcdColor(47, 34, 229);
     printMessage("Go Gators!");
     delay(3000);
     setLcdColor(255, 119, 0);
     printMessage("Go Gators!");
     delay(3000); 
+    turnLeft(5);
+    char notes[] = "gC ";
+    int beats[] = {1, 1, 1};
+    playMusic(notes, beats);
     
     
     delay(200);
   }
 }
 
-// LCD functions - disabled until lcd is fixed
+/***************************************************************************
+ * ALL THE FUNCTIONS
+ **************************************************************************/
+
+/******************************************************
+ * LCD Functions
+ *****************************************************/
+
+/*
+ * setLcdColor
+ * What it does: Changes the background color of the LCD to the inputted RGB value 
+ * Inputs: R value, G value, B value
+ */ 
 int setLcdColor(int r, int g, int b)
 {
   colorR = r;
@@ -90,6 +109,11 @@ int setLcdColor(int r, int g, int b)
   return 0;
 }
 
+/*
+ * printMessage
+ * What it does: Prints the inputted message to the LCD 
+ * Inputs: the message
+ */
 int printMessage(char str[])
 {
   lcd.setRGB(colorR, colorG, colorB);
@@ -99,7 +123,15 @@ int printMessage(char str[])
   return 0;
 }
 
-// Motion routines for forward, reverse, turns, and stop
+/******************************************************
+ * Motion Functions
+ *****************************************************/
+ 
+/*
+ * turnLeft
+ * What it does: the robot turns left for the inputted time 
+ * Inputs: time (in seconds)
+ */
 int turnLeft(int seconds)
 {
   Serial.println("turning left");
@@ -323,7 +355,7 @@ void playTone(int tone, int duration) {
 
 void playNote(char note, int duration) {
     char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };
-    int tones[] = { 1915, 1700, 1519, 1432, 1275, 1136, 1014, 956 };
+    int tones[] = { 523, 587, 659, 698, 784, 880, 988, 1047 };
 
     // play the tone corresponding to the note name
     for (int i = 0; i < 8; i++) {
