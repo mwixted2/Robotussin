@@ -144,11 +144,21 @@ int turnLeft(int seconds)
   return 0;
 }
 
+/*
+ * left
+ * What it does: writes to the servos to turn the robot left
+ * Inputs: none
+ */
 void left() {
   servoLeft.write(60);
   servoRight.write(60);
 }
 
+/*
+ * turnRight
+ * What it does: the robot turns right for the inputted time
+ * Inputs: time (in seconds)
+ */
 int turnRight(int seconds)
 {
   Serial.println("turning right");
@@ -161,11 +171,21 @@ int turnRight(int seconds)
   return 0;
 }
 
+/*
+ * right
+ * What it does: writes to the servos to turn the robot right
+ * Inputs: none
+ */
 void right() {
   servoLeft.write(120);
   servoRight.write(120);
 }
 
+/*
+ * reverse
+ * What it does: the robot goes backwards for the inputted time
+ * Inputs: time (in seconds)
+ */
 int reverse(int seconds)
 {
   Serial.println("reversing");
@@ -178,11 +198,21 @@ int reverse(int seconds)
   return 0;
 }
 
+/*
+ * reverseRobot
+ * What it does: writes to the servos to make the robot go backwards
+ * Inputs: none
+ */
 void reverseRobot() {
   servoLeft.write(60);
   servoRight.write(120);
 }
 
+/*
+ * forward
+ * What it does: makes the robot go forward for the inputted time
+ * Inputs: time (in second)
+ */
 int forward(int seconds)
 {
   Serial.println("moving forward");
@@ -195,27 +225,52 @@ int forward(int seconds)
   return 0;
 }
 
+/*
+ * forwardRobot
+ * What it does: writes to the servos to make the robot go forward
+ * Inputs: none
+ */
 void forwardRobot() {
   servoLeft.write(120);
   servoRight.write(60);
 }
 
+/*
+ * stopRobot
+ * What it does: writes to the servo to stop the robot
+ * Inputs: none
+ */
 void stopRobot() {
   servoLeft.write(90);
   servoRight.write(90);
 }
 
+/*
+ * attachWheels
+ * What it does: attaches the servos 
+ * Inputs: none
+ */
 void attachWheels() {
   servoLeft.attach(9);  
   servoRight.attach(10);  
 }
 
+/*
+ * detachWheels
+ * What it does: detaches the wheels
+ * Inputs: none
+ */
 void detachWheels() {
   servoLeft.detach();
   servoRight.detach();
   delay(200);
 }
 
+/*
+ * read_gp2d12_range
+ * What it does: reads in the values from the sensors and returns it as a float
+ * Inputs: number of the pin
+ */
 float read_gp2d12_range(byte pin)
 {
   int tmp;
@@ -224,11 +279,16 @@ float read_gp2d12_range(byte pin)
   return (6787.0 /((float)tmp - 3.0)) - 4.0;
 }
 
-/* Inputs for direction:
- * 0 - forward
- * 1 - right
- * 2 - reverse
- * 3 - left
+/* 
+ * readSensors
+ * What it does: reads the values from the sensor and stops the robot if an obstacle is detected
+ * Inputs: time (in seconds), direction the robot needs to move in (given below)
+ * 
+ * Inputs for direction:
+ *  0 - forward
+ *  1 - right
+ *  2 - reverse
+ *  3 - left
  */
 void readSensors(int seconds, int direction) {
   int time = seconds * 1000;
@@ -304,7 +364,15 @@ void readSensors(int seconds, int direction) {
   }
 }
 
-//Music functions
+/******************************************************
+ * LCD Functions
+ *****************************************************/
+
+/*
+ * playMusic
+ * What it does: plays the notes following the beats given
+ * Inputs: notes (array of char), beats (array of ints)
+ */
 void playMusic(char notes[], int beats[])
 {
   if(sizeof(notes) != sizeof(beats))
@@ -325,6 +393,11 @@ void playMusic(char notes[], int beats[])
     }
 }
 
+/*
+ * playMusic
+ * What it does: plays a "tune" according to the inputted code
+ * Input: code (as a string)
+ */
 void playMusic(char str[])
 {
   if(str == "siren")
@@ -343,7 +416,11 @@ void playMusic(char str[])
   }
 }
 
-/* play tone */
+/*
+ * playTone
+ * What it does: plays the inputted tone for the inputted duration
+ * Input: tone (as an int), duration ( as in int)
+ */
 void playTone(int tone, int duration) {
     for (long i = 0; i < duration * 1000L; i += tone * 2) {
         digitalWrite(BUZZER_PIN, HIGH);
@@ -353,6 +430,21 @@ void playTone(int tone, int duration) {
     }
 }
 
+/*
+ * playNote
+ * What it does: plays the inputted note for the inputted duration
+ * Inputs: notes (as char, as seen below), duration ( as an int)
+ * 
+ * Inputs for note:
+ *  'c' - lower C 
+ *  'd' - D
+ *  'e' - E
+ *  'f' - F
+ *  'g' - G
+ *  'a' - A
+ *  'b' - B
+ *  'C' - higher C
+ */
 void playNote(char note, int duration) {
     char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };
     int tones[] = { 523, 587, 659, 698, 784, 880, 988, 1047 };
